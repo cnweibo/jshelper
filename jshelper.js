@@ -35,3 +35,29 @@ function getOwnFunctionNames(obj) {
     }
     return functions;
 }
+/**
+ * escape the HTML strings &<>" are changed
+ * @param  {String} htmlStr html string to be escaped
+ * @return {String}         escaped html string
+ */
+function escapeHTML(htmlStr) {
+    return htmlStr.replace(/[&<>"']/g,function(matched) {
+        switch (matched) {
+            case '&':
+                return '&amp';
+                break;
+            case '<':
+                return '&lt;';
+                break;
+            case '>':
+                return '&gt;';
+                break;
+            case '"':
+                return '&quot;';
+                break;                                
+            default:
+                return matched;
+                break;
+        }
+    });
+}
