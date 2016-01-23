@@ -61,3 +61,11 @@ function escapeHTML(htmlStr) {
         }
     });
 }
+/**
+ * convert Array-like arguments to Array
+ * @param  {arguments} arguments the arguments for function
+ * @return {Array}           the array representing arguments
+ */
+function args2Array(arguments) {
+    return Array.prototype.slice.apply(arguments);
+}
