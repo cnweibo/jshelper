@@ -5,6 +5,17 @@
  * @return {string} lowercase constructor function name or null/undefined
  */
 function getType(obj) {
+    var _type = typeof obj;
+    switch (_type) {
+        case "string":
+        case "boolean":
+        case "number":
+        case "function":
+        return _type;
+        default:
+            // statements_def
+            break;
+    }
     return obj && obj.constructor && obj.constructor.toString().match(/function\s*([^(]*)/)[1].toLowerCase();
 }
 /**
