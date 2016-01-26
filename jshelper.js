@@ -40,8 +40,12 @@ function getOwnFunctionNames(obj) {
     for (var i = 0; i < length; i++) {
         var property = properties[i];
         if (property == "arguments" || property == "caller" ){continue;}
-        if (typeof obj[property] === "function"){
-            functions.push(property); 
+        try{
+          if (typeof obj[property] === "function"){
+              functions.push(property); 
+          }
+        }catch(e){
+          console.log(property+" for "+getType(obj));
         }
     }
     return functions;
@@ -79,4 +83,72 @@ function escapeHTML(htmlStr) {
  */
 function args2Array(arguments) {
     return Array.prototype.slice.apply(arguments);
+}
+/**
+ * property comes from which __proto__ in the prototype chain
+ * @param  {Object} obj  the object to inspect
+ * @param  {property} prop the property to check
+ * @return {Object}      property comes from which __proto__
+ *                       If not found, retun "not found"
+ */
+function propInfo(obj,prop) {
+  if(obj.hasOwnProperty(prop)){
+    return {propName: prop, "propValue" : obj[prop] ,belongsTo: getType(obj) };
+  }else if(obj.__proto__){
+    return propInfo(obj.__proto__, prop);
+  }else{
+    return "not found";
+  }
+}
+/**
+ * print out prototype chain for a given object
+ * @param  {Object} obj the object to inspect
+ * @return {Array}     all the Constructor name of the prototypes
+ */
+function protoChainInfo(obj) {
+  var protos = [];
+  (function getProto(object) {
+    var proto = object && Object.getPrototypeOf(object);
+    if (proto) {
+      protos.push(getType(proto));  
+      getProto(proto);
+    }else return;
+  })(obj)
+  return protos;
+}
+/**
+ * print out detail prototype chain for a given object
+ * @param  {Object} obj the object to inspect
+ * @return {Array}     all the Constructor name of the prototypes
+ *                     and its properties
+ */
+function protoChainInfoDetailAll(obj) {
+  var protos = [];
+  (function getProto(object) {
+    var proto = object && Object.getPrototypeOf(object);
+    if (proto) {
+      protos.push({protoConstructor: getType(proto),protoOwnFunctions: getOwnPropertyNames(proto)});  
+      getProto(proto);
+    }else return;    
+  })(obj)
+  return protos;  
+}
+/**
+ * print out all functions in the prototype chain for a given object
+ * @param  {Object} obj the object to inspect
+ * @return {Array}     all the functions in the proto chain
+ */
+function protoChainInfoDetail(obj) {
+  var protos = [];
+  (function getProto(object) {
+    var proto = object && Object.getPrototypeOf(object);
+    if (proto) {
+      protos.push({protoConstructor: getType(proto),protoOwnFunctions: getOwnFunctionNames(proto)});  
+      getProto(proto);
+    }else return;
+      
+  })(obj)
+
+  return protos;
+  
 }
