@@ -93,7 +93,7 @@ function args2Array(arguments) {
  */
 function propInfo(obj,prop) {
   if(obj.hasOwnProperty(prop)){
-    return {propName: prop, "propValue" : obj[prop] ,belongsTo: getType(obj) };
+    return {propName: prop ,belongsTo: getType(obj) };
   }else if(obj.__proto__){
     return propInfo(obj.__proto__, prop);
   }else{
