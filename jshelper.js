@@ -6,6 +6,7 @@
  */
 function getType(obj) {
     var _type = typeof obj;
+    var result;
     switch (_type) {
         case "string":
         case "boolean":
@@ -16,7 +17,8 @@ function getType(obj) {
             // statements_def
             break;
     }
-    return obj && obj.constructor && obj.constructor.toString().match(/function\s*([^(]*)/)[1].toLowerCase();
+    result = obj && obj.constructor && obj.constructor.toString();
+    return result && (result.match(/object ([^\[\]]*)/)?result.match(/object ([^\[\]]*)/)[1].toLowerCase():undefined || result.match(/function\s*([^(]*)/)?result.match(/function\s*([^(]*)/)[1].toLowerCase():undefined);
 }
 /**
  * retrieve the own property names for given object
